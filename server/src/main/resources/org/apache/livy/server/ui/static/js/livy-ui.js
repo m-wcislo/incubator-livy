@@ -34,7 +34,7 @@ function escapeHtml(string) {
 }
 
 function uiLink(relativePath, inner) {
-  return anchorLink("/ui/" + relativePath, inner);
+  return anchorLink(sessionStorage.getItem('basePath') + "/ui/" + relativePath, inner);
 }
 
 function anchorLink(link, inner) {
@@ -89,8 +89,13 @@ function progressBar(double) {
 
 function getPathArray() {
   var pathArr = location.pathname.split("/");
-  pathArr.splice(0, 2);
+  var extra = (sessionStorage.getItem('basePath').match(/\//g) || []).length;
+  pathArr.splice(0, 2+extra);
   return pathArr;
+}
+
+function prependBasePath(path) {
+	return sessionStorage.getItem('basePath') + path
 }
 
 $.extend( $.fn.dataTable.defaults, {
